@@ -48,16 +48,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 表单验证
-    const contactForm = document.querySelector('.contact-form form');
+    // 表单验证和提交
+    const contactForm = document.querySelector('#contactForm');
+    const formSuccess = document.querySelector('#formSuccess');
+    
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             // 获取表单字段
-            const nameInput = this.querySelector('input[type="text"]');
-            const emailInput = this.querySelector('input[type="email"]');
-            const messageInput = this.querySelector('textarea');
+            const nameInput = this.querySelector('input[name="name"]');
+            const emailInput = this.querySelector('input[name="email"]');
+            const messageInput = this.querySelector('textarea[name="message"]');
             
             // 简单验证
             let isValid = true;
@@ -86,25 +88,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 removeError(messageInput);
             }
             
-            // 如果验证通过，显示成功消息（在实际应用中，这里会提交表单到服务器）
+            // 如果验证通过，提交表单
             if (isValid) {
-                // 清空表单
-                contactForm.reset();
+                const submitButton = this.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.textContent = '提交中...';
                 
-                // 显示成功消息
-                const successMessage = document.createElement('div');
-                successMessage.className = 'success-message';
-                successMessage.textContent = '感谢您的留言！我们会尽快回复您。';
-                successMessage.style.color = '#1cc88a';
-                successMessage.style.padding = '10px 0';
-                successMessage.style.textAlign = 'center';
-                
-                contactForm.appendChild(successMessage);
-                
-                // 3秒后移除成功消息
-                setTimeout(() => {
-                    successMessage.remove();
-                }, 3000);
+                try {
+                    const formData = new FormData(this);
+                    const response = await fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        // 清空表单
+                        this.reset();
+                        
+                        // 显示成功消息
+                        this.style.display = 'none';
+                        formSuccess.style.display = 'block';
+                        
+                        // 3秒后重置表单显示
+                        setTimeout(() => {
+                            this.style.display = 'block';
+                            formSuccess.style.display = 'none';
+                        }, 3000);
+                    } else {
+                        throw new Error('提交失败，请稍后重试');
+                    }
+                } catch (error) {
+                    alert(error.message);
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.textContent = '提交留言';
+                }
             }
         });
     }
