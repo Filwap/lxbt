@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Disallow: /js/
+Disallow: /css/
+
+# 百度蜘蛛特别配置
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+# 屏蔽不良爬虫
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /

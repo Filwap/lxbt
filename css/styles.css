@@ -282,6 +282,16 @@ img {
 .product-info p {
     color: var(--gray-color);
     font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+
+.product-tag {
+    display: inline-block;
+    background-color: #e1f5ee;
+    color: #0f6e56;
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    border-radius: 12px;
 }
 
 .view-more {
@@ -320,9 +330,15 @@ img {
     transform: translateY(-5px);
 }
 
-.info-item i {
+.info-item i,
+.info-icon {
     font-size: 2rem;
     color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.info-icon {
+    display: block;
     margin-bottom: 15px;
 }
 
