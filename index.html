@@ -12,6 +12,9 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <title>深圳白铁工程_通风管道安装_白铁风管制作-龙兴白铁装饰(龙岗)</title>
     <link rel="stylesheet" href="css/styles.css">
+    <!-- Leaflet 交互地图 -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <!-- Open Graph 社交分享优化 -->
     <meta property="og:title" content="深圳白铁工程_龙兴白铁装饰-龙岗专业团队">
     <meta property="og:description" content="专注深圳白铁工程8年，提供通风管道安装、白铁风管制作服务">
@@ -289,15 +292,7 @@
                 </div>
                 <div class="contact-map">
                     <div class="map-placeholder">
-                        <iframe
-                            src="https://map.baidu.com/embed?center=114.2328,22.6950&zoom=17&marker=114.2328,22.6950&title=龙兴白铁装饰"
-                            width="100%"
-                            height="100%"
-                            style="border:0;min-height:350px;"
-                            allowfullscreen=""
-                            loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
+                        <div id="map" style="width:100%;height:100%;min-height:350px;"></div>
                     </div>
                 </div>
             </div>
@@ -378,5 +373,38 @@
     </div>
 
     <script src="js/script.js"></script>
+    <!-- 高德中文地图初始化 -->
+    <script>
+    (function() {
+        var mapEl = document.getElementById('map');
+        if (!mapEl) return;
+
+        var map = L.map('map', {
+            center: [22.6950, 114.2328],
+            zoom: 16,
+            zoomControl: true,
+            attributionControl: false
+        });
+
+        // 高德中文瓦片（无需 API Key）
+        L.tileLayer('https://webrd0{switch:1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+            maxZoom: 18,
+            subdomains: '1234',
+            tileSize: 256
+        }).addTo(map);
+
+        // 店铺标记
+        var marker = L.marker([22.6950, 114.2328]).addTo(map);
+        marker.bindPopup(
+            '<strong style="font-size:15px;">龙兴白铁装饰</strong><br>' +
+            '深圳市龙岗区宝龙街道<br>' +
+            '龙东社区爱南路28号<br><br>' +
+            '<a href="https://uri.amap.com/marker?position=114.2328,22.6950&name=龙兴白铁装饰" ' +
+            'target="_blank" rel="noopener" ' +
+            'style="display:inline-block;padding:6px 14px;background:#1677ff;color:#fff;border-radius:4px;text-decoration:none;">' +
+            '使用高德导航 →</a>'
+        ).openPopup();
+    })();
+    </script>
 </body>
 </html>

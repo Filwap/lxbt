@@ -361,12 +361,11 @@ img {
     position: relative;
 }
 
-.map-placeholder iframe {
-    width: 100%;
-    height: 100%;
-    min-height: 350px;
-    border: none;
+.map-placeholder .leaflet-container {
     border-radius: 10px;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 350px;
 }
 
 .contact-form {
