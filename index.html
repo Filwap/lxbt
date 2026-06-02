@@ -380,26 +380,41 @@
         if (!mapEl) return;
 
         var map = L.map('map', {
-            center: [22.6950, 114.2328],
+            center: [22.717287, 114.292415],
             zoom: 16,
             zoomControl: true,
             attributionControl: false
         });
 
         // 高德中文瓦片（无需 API Key）
-        L.tileLayer('https://webrd0{switch:1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+        var amapLayer = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
             maxZoom: 18,
             subdomains: '1234',
-            tileSize: 256
-        }).addTo(map);
+            tileSize: 256,
+            crossOrigin: true
+        });
+
+        // 如果高德瓦片加载失败，自动回退到 OpenStreetMap
+        amapLayer.on('tileerror', function() {
+            if (!window._mapFallback) {
+                window._mapFallback = true;
+                map.removeLayer(amapLayer);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; OpenStreetMap'
+                }).addTo(map);
+            }
+        });
+
+        amapLayer.addTo(map);
 
         // 店铺标记
-        var marker = L.marker([22.6950, 114.2328]).addTo(map);
+        var marker = L.marker([22.717287, 114.292415]).addTo(map);
         marker.bindPopup(
             '<strong style="font-size:15px;">龙兴白铁装饰</strong><br>' +
             '深圳市龙岗区宝龙街道<br>' +
             '龙东社区爱南路28号<br><br>' +
-            '<a href="https://uri.amap.com/marker?position=114.2328,22.6950&name=龙兴白铁装饰" ' +
+            '<a href="https://uri.amap.com/marker?position=114.292415,22.717287&name=龙兴白铁装饰" ' +
             'target="_blank" rel="noopener" ' +
             'style="display:inline-block;padding:6px 14px;background:#1677ff;color:#fff;border-radius:4px;text-decoration:none;">' +
             '使用高德导航 →</a>'
